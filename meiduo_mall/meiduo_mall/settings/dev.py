@@ -17,6 +17,22 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #print(BASE_DIR)
 #/home/python/Desktop/mall/meiduo_test/meiduo_mall/meiduo_mall
 
+#print(sys.path) #查看导包路径
+'''
+['/home/python/Desktop/mall/meiduo_test/meiduo_mall',
+'/home/python/.virtualenvs/py3_django/lib/python35.zip', 
+'/home/python/.virtualenvs/py3_django/lib/python3.5', 
+'/home/python/.virtualenvs/py3_django/lib/python3.5/plat-x86_64-linux-gnu', 
+'/home/python/.virtualenvs/py3_django/lib/python3.5/lib-dynload', 
+'/usr/lib/python3.5', 
+'/usr/lib/python3.5/plat-x86_64-linux-gnu', 
+'/home/python/.virtualenvs/py3_django/lib/python3.5/site-packages']
+
+'''
+#添加导报路径
+sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -26,7 +42,7 @@ SECRET_KEY = 'qxkgd+xatseez^43^k(^bb@hs+-ewb35jl54el!wih^n!rdt=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.45.146']
+ALLOWED_HOSTS = ['192.168.45.147']
 
 
 # Application definition
@@ -38,6 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
+    'contents',
 ]
 
 MIDDLEWARE = [
@@ -189,3 +207,7 @@ LOGGING = {
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+
+#指定本项目用户模型类
+#AUTH_USER_MODEL = '应用名.模型类名'
+AUTH_USER_MODEL = 'users.User'
