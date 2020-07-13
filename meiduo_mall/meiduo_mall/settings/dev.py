@@ -219,3 +219,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 #指定本项目用户模型类
 #AUTH_USER_MODEL = '应用名.模型类名'
 AUTH_USER_MODEL = 'users.User'
+#自定义用户认证后端
+AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
+
+#用户未登陆时重定向页面
+LOGIN_URL = '/login/'
