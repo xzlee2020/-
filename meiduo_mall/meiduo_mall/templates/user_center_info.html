@@ -14,7 +14,7 @@
 		<div class="header" v-cloak>
             <div class="welcome fl">欢迎来到美多商城!</div>
             <div class="fr">
-                <div v-if="username" class="login_btn fl">
+                <div v-if="username" class="login_btn fl" v-cloak>
                     欢迎您：<em>[[ username ]]</em>
                     <span>|</span>
                     <a href="{{ url('users:logout') }}">退出</a>
@@ -55,7 +55,7 @@
 			<h3>用户中心</h3>
 			<ul>
 				<li><a href="{{ url('users:info') }}" class="active">· 个人信息</a></li>
-				<li><a href="user_center_site.html">· 收货地址</a></li>
+                <li><a href="{{url('users:address')}}">· 收货地址</a></li>
                 <li><a href="user_center_order.html">· 全部订单</a></li>
 				<li><a href="user_center_pass.html">· 修改密码</a></li>
 			</ul>

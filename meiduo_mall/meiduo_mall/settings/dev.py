@@ -42,7 +42,7 @@ SECRET_KEY = 'qxkgd+xatseez^43^k(^bb@hs+-ewb35jl54el!wih^n!rdt=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.45.147']
+ALLOWED_HOSTS = ['192.168.45.151']
 
 
 # Application definition
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'users',
     'contents',
     'verifications',
+    'areas',
 ]
 
 MIDDLEWARE = [
@@ -224,3 +225,5 @@ AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
 
 #用户未登陆时重定向页面
 LOGIN_URL = '/login/'
+#邮箱验证链接
+EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'

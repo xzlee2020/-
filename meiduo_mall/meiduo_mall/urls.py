@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-
+admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^',include('users.urls',namespace ='users')),
-    url(r'^',include('contents.urls',namespace='contents')),
-    url(r'^',include('verifications.urls')),
+    url(r'^',include(('users.urls','users'),namespace ='users')),
+    url(r'^',include(('contents.urls','contents'),namespace='contents')),
+    url(r'^',include(('verifications.urls','verifications'))),
+    url(r'^',include('areas.urls')),
 ]
