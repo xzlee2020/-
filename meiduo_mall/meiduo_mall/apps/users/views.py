@@ -140,7 +140,6 @@ class AddressView(LoginRequiredMixin, View):
         # 获取用户地址列表
         login_user = request.user
         addresses = Address.objects.filter(user=login_user, is_deleted=False)
-
         address_dict_list = []
         for address in addresses:
             address_dict = {

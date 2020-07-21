@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'contents',
     'verifications',
     'areas',
+    'goods',
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'meiduo_mall.urls'
 
 TEMPLATES = [
-    {
+        {
         #'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'BACKEND': 'django.template.backends.jinja2.Jinja2',  # jinja2模板引擎
         'DIRS': [os.path.join(BASE_DIR,'templates')],
@@ -87,8 +88,8 @@ TEMPLATES = [
             ],
             #补充Jinja2模板引擎环境
             'environment': 'meiduo_mall.utils.jinja2_env.jinja2_environment', 
+            },
         },
-    },
 ]
 
 WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
@@ -227,3 +228,10 @@ AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
 LOGIN_URL = '/login/'
 #邮箱验证链接
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
+
+# 指定自定义的Django文件存储类
+DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
+
+# FastDFS相关参数
+FDFS_BASE_URL = 'http://192.168.45.151:8888/'
+#FDFS_BASE_URL = 'http://image.meiduo.site:8888/'
