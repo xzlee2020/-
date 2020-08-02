@@ -42,7 +42,7 @@ SECRET_KEY = 'qxkgd+xatseez^43^k(^bb@hs+-ewb35jl54el!wih^n!rdt=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.45.151']
+ALLOWED_HOSTS = ['192.168.45.158']
 
 
 # Application definition
@@ -233,5 +233,5 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # FastDFS相关参数
-FDFS_BASE_URL = 'http://192.168.45.151:8888/'
+FDFS_BASE_URL = 'http://192.168.45.158:8888/'
 #FDFS_BASE_URL = 'http://image.meiduo.site:8888/'

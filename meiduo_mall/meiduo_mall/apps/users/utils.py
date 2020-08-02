@@ -36,24 +36,18 @@ def generate_verify_email_url(user):
     verify_url = settings.EMAIL_VERIFY_URL + '?token=' + token
     return verify_url
 
-def get_user_by_acount(acount):
-    try:
-        if re.match('^1[3-9]\d{9}$', acount):
-            user=User.objects.get(mobile=acount)
-        else:
-            user = User.objects.get(username=acount)
-
-    except User.DoesNotExist:
-        return None
-    else:
-        return user
 
 class UsernameMobileAuthBackend(ModelBackend):
     '''自定义用户认证后端'''
     def authenticate(self, request, username=None, password=None, **kwargs):
-        user = get_user_by_acount(username)
-               
-        #print('user',user)
+        try:
+            if re.match('^1[3-9]\d{9}$', username):
+                user = User.objects.get(mobile=username)
+            else:
+                user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return  None
+
         if user and user.check_password(password):
             return user
         '''

@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^',include(('contents.urls','contents'),namespace='contents')),
     url(r'^',include(('verifications.urls','verifications'))),
     url(r'^',include('areas.urls')),
+#    url(r'^',include('goods.urls',namespace='goods')),
+    url(r'^', include('goods.urls', namespace='goods')),
 ]

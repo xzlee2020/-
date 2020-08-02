@@ -290,7 +290,7 @@ class EmailView(LoginRequiredJSONMixin,View):
         except Exception as e:
             logger.error(e)
             return http.JsonResponse({'code': RETCODE.DBERR, 'errmsg': '添加邮箱失败'})
-        print(generate_verify_email_url())
+        print(generate_verify_email_url(request.user))
         # 响应添加邮箱结果
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
 

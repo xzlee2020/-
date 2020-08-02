@@ -298,7 +298,7 @@ CREATE TABLE `tb_sku` (
   `is_launched` tinyint(1) NOT NULL,
   `category_id` int(11) NOT NULL,
   `spu_id` int(11) NOT NULL,
-  `default_image` varchar(100),
+  `default_image_url` varchar(100),
   PRIMARY KEY (`id`),
   KEY `tb_sku_category_id_23dd76b7_fk_tb_goods_category_id` (`category_id`),
   KEY `tb_sku_spu_id_fa5267c2_fk_tb_spu_id` (`spu_id`),
