@@ -28,13 +28,13 @@ class DetailVisitView(View):
         # 获取今天的日期
         t = timezone.localtime()
         today_str = '%d-%02d-%02d' % (t.year, t.month, t.day)
-        today_date = datetime.datetime.strptime(today_str, '%Y-%m-%d')
+        today_date = datetime.strptime(today_str, '%Y-%m-%d')
         try:
             # 查询今天该类别的商品的访问量
-            counts_data = category.goodsvisitcount_set.get(date=today_date)
-        except models.GoodsVisitCount.DoesNotExist:
+            counts_data = category.goodsvisit_set.get(date=today_date)
+        except models.GoodsVisit.DoesNotExist:
             # 如果该类别的商品在今天没有过访问记录，就新建一个访问记录
-            counts_data = models.GoodsVisitCount()
+            counts_data = models.GoodsVisit()
 
         try:
             counts_data.category = category
@@ -115,9 +115,11 @@ class HotGoodsView(View):
         # 序列化
         hot_skus = []
         for sku in skus:
+#            skuimage = sku.skuimage_set.all()[0].image.url
+#            print(skuimage)
             hot_skus.append({
                 'id':sku.id,
-                'default_image_url':sku.default_image.url,
+                'default_image_url':sku.default_image_url.url,
                 'name':sku.name,
                 'price':sku.price
             })
