@@ -3,14 +3,65 @@ from django.views import View
 import re,json
 from django import http
 from users.models import User,Address
+from goods.models import SKU
 from django.urls import reverse
 from django.contrib.auth import login,authenticate,logout
 from meiduo_mall.utils.response_code import RETCODE
 from django.contrib.auth.mixins import LoginRequiredMixin
 from meiduo_mall.utils.views import LoginRequiredJSONMixin
 from .utils import check_verify_email_token,generate_verify_email_url
+from django_redis import get_redis_connection
 
 # Createyour views here.
+class UserBrowseHistory(LoginRequiredJSONMixin, View):
+    '''用户浏览记录'''
+    def get(self,request):
+        #获取用户
+        user_id = request.user.id
+        #获取redis中sku信息
+        redis_conn= get_redis_connection('history')
+        sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
+        #建立空表 
+        skus = []
+        if sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': sku.default_image.url,
+                'price': sku.price})
+        #响应结果
+        return http.JsonResponse({'code':RETCODE.OK, 'errmsg': 'OK','skus':skus})
+
+
+    def post(self,request):
+        #接收参数 sku_id
+        json_str = request.body().decode()
+        json_dict = json.loads(json_str)
+        #获取参数
+        sku_id = json_dict.get('sku_id')
+        #校验参数
+        try:
+            SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return http.HttpResponseForbidden('sku不存在')
+        
+        #获取redis链接对象
+        redis_conn = get_redis_connection('history')
+        #获取pipeline
+        pl = redis_conn.pipeline()
+        #去重
+        user_id = request.user.id
+        pl.lrem('history_%s' % user_id, 0, sku_id)
+        #存储
+        pl.lpush('history_%s' % user_id, sku_id)
+        #截取
+        pl.ltrim('history_%s' % user_id, 0, 4)
+        #执行
+        pl.execute()
+        #响应结果
+        return http.JsonResponse({'code':RETCODE.OK,'errmsg':'OK'})
+
 
 class UpdateTitleAddressView(LoginRequiredJSONMixin, View):
     """设置地址标题"""
