@@ -18,29 +18,33 @@ class UserBrowseHistory(LoginRequiredJSONMixin, View):
     def get(self,request):
         #获取用户
         user_id = request.user.id
+        
         #获取redis中sku信息
         redis_conn= get_redis_connection('history')
         sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
         #建立空表 
         skus = []
-        if sku_id in sku_ids:
+        for sku_id in sku_ids:
             sku = SKU.objects.get(id=sku_id)
             skus.append({
                 'id': sku.id,
                 'name': sku.name,
-                'default_image_url': sku.default_image.url,
+                'default_image_url': sku.default_image_url.url,
                 'price': sku.price})
         #响应结果
+        
         return http.JsonResponse({'code':RETCODE.OK, 'errmsg': 'OK','skus':skus})
 
 
     def post(self,request):
+        print('用户记录保存程序开始')
         #接收参数 sku_id
-        json_str = request.body().decode()
+        json_str = request.body.decode()
         json_dict = json.loads(json_str)
         #获取参数
         sku_id = json_dict.get('sku_id')
         #校验参数
+        print('用户浏览记录开始保存')
         try:
             SKU.objects.get(id=sku_id)
         except SKU.DoesNotExist:

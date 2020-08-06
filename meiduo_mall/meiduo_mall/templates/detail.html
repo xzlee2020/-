@@ -49,23 +49,18 @@
 				<li><a href="#">买2免1</a></li>
 			</ul>
 		</div>
-		<div class="guest_cart fr">
+		<div @mouseenter="get_carts" class="guest_cart fr" v-cloak>
 			<a href="cart.html" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">2</div>
+			<div class="goods_count fl" id="show_count">[[ cart_total_count ]]</div>
 			<ul class="cart_goods_show">
-				<li>
-					<img src="{{ static('images/goods/goods001.jpg') }}" alt="商品图片">
-					<h4>华为 HUAWEI P10 Plus 6GB+64GB 钻雕金 移动联通电信4G手机 双卡双待</h4>
-					<div>1</div>
+				<li v-for="sku in carts">
+					<img :src="sku.default_image_url" alt="商品图片">
+					<h4>[[ sku.name ]]</h4>
+					<div>[[ sku.count ]]</div>
 				</li>
-				<li>
-					<img src="{{ static('images/goods/goods002.jpg') }}" alt="商品图片">
-					<h4>Apple iPhoneX 64GB 深空灰色 移动联通电信4G手机</h4>
-					<div>1</div>
-				</li>
-			</ul>			
-		</div>
-	</div>
+			</ul>
+		</div>	
+    </div>
 	<div class="navbar_con">
 		<div class="navbar">
 			<div class="sub_menu_con fl">
@@ -143,7 +138,8 @@
             {% endfor %}
 			<div class="total" v-cloak>总价：<em>[[ sku_amount ]]元</em></div>
 			<div class="operate_btn">
-				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+            <!--	<a href="javascript:;" class="add_cart" id="add_cart" >加入购物车</a>-->
+            <a @click="add_carts" class="add_cart" id="add_cart">加入购物车</a>
 			</div>
 		</div>
 	</div>
@@ -170,7 +166,7 @@
 			<div @click="on_tab_content('detail')" class="tab_content" :class="tab_content.detail?'current':''">
 				<dl>
 					<dt>商品详情：</dt>
-					<dd>{{ sku.spu.desc_detail|safe }}</dd>
+				 <!--	<dd>{{ sku.spu.desc_detail|safe }}</dd>-->
 				</dl>
 			</div>
 			<div @click="on_tab_content('pack')" class="tab_content" :class="tab_content.pack?'current':''">
@@ -218,7 +214,7 @@
     <script type="text/javascript">
 		let category_id = "{{ sku.category.id }}";
 		let sku_price = "{{ sku.price }}";
-        let sku_id = "";
+        let sku_id = "{{ sku.id  }}";
     </script>
 	<script type="text/javascript" src="{{ static('js/common.js') }}"></script>
 	<script type="text/javascript" src="{{ static('js/detail.js') }}"></script>

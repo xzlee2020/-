@@ -27,7 +27,7 @@ let vm = new Vue({
         },
     },
     mounted(){
-		// 获取热销商品数据
+        // 获取热销商品数据
         this.get_hot_skus();
         // 记录分类商品的访问量
 		this.goods_visit_count();
@@ -36,7 +36,7 @@ let vm = new Vue({
 		// 获取简单购物车数据
         this.get_carts();
 		// 获取商品评价信息
-        this.get_goods_comment();
+        //this.get_goods_comment();
     },
     watch: {
         // 监听商品数量的变化

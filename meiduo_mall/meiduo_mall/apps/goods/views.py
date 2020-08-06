@@ -101,6 +101,7 @@ class DetailView(View):
             'breadcrumb':breadcrumb,
             'sku':sku,
             'specs': goods_specs,
+            'sku_id':sku.id,
         }
         return render(request, 'detail.html', context)
 
