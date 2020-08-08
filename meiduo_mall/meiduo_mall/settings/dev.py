@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'goods',
     'haystack', # 全文检索
     'carts',
+    'orders',
 ]
 
 
