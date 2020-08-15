@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'haystack', # 全文检索
     'carts',
     'orders',
+    'django_crontab' # 定时任务
 ]
 
 
@@ -112,8 +113,18 @@ DATABASES = {
         'USER': 'root', # 数据库用户名
         'PASSWORD': 'mysql', # 数据库用户密码
         'NAME': 'meiduo' # 数据库名字
+    },
+    'slave': { # 读（从机）
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '192.168.103.158',
+        'PORT': 8306,
+        'USER': 'root',
+        'PASSWORD': 'mysql',
+        'NAME': 'meiduo_mall'
     }
 }
+
+DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
 
 #Redis
 CACHES = {
@@ -264,3 +275,11 @@ HAYSTACK_CONNECTIONS = {
 }
 # 当添加、修改、删除数据时，自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+CRONJOBS = [
+        # 每1分钟生成一次首页静态文件
+        ('*/1 * * * *', 'contents.crons.generate_static_index_html', '>> ' +
+         os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
+    
+]
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
