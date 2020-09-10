@@ -40,20 +40,34 @@ def generate_verify_email_url(user):
 class UsernameMobileAuthBackend(ModelBackend):
     '''自定义用户认证后端'''
     def authenticate(self, request, username=None, password=None, **kwargs):
-        try:
-            if re.match('^1[3-9]\d{9}$', username):
-                user = User.objects.get(mobile=username)
-            else:
-                user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return  None
+        if request is None:
+            print('用户通过后端登陆')
+            try:
+                user = User.objects.get(username=username,is_staff=True)
 
-        if user and user.check_password(password):
-            return user
-        '''
-        user = User.objects.get(username=user.username,password=password)
-        if user:
-            return user
+            except:
+                return None
+            print(user)
+            if user.check_password(password):
+                print('密码正确')
+                return user
         else:
-            return None
-        ''' 
+            print('用户通过前端登陆')
+            try:
+                if re.match('^1[3-9]\d{9}$', username):
+                    user = User.objects.get(mobile=username)
+                else:
+                    user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return  None
+
+            if user and user.check_password(password):
+                return user
+            '''
+            user = User.objects.get(username=user.username,password=password)
+            if user:
+                return user
+            else:
+                return None
+            '''
+

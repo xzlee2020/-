@@ -21,9 +21,9 @@ urlpatterns = [
     url(r'^',include(('contents.urls','contents'),namespace='contents')),
     url(r'^',include(('verifications.urls','verifications'))),
     url(r'^',include('areas.urls')),
-#    url(r'^',include('goods.urls',namespace='goods')),
     url(r'^', include('goods.urls', namespace='goods')),
     url(r'^search/', include('haystack.urls')),
     url(r'^',include(('carts.urls'),namespace='carts')),
     url(r'^',include(('orders.urls'),namespace='orders')),
+    url(r'^meiduo_admin/',include(('meiduo_admin.urls'),namespace='meiduo_admin')),
 ]

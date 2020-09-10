@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import datetime
 import os,sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -42,7 +42,7 @@ SECRET_KEY = 'qxkgd+xatseez^43^k(^bb@hs+-ewb35jl54el!wih^n!rdt=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.45.162']
+ALLOWED_HOSTS = ['192.168.45.164']
 
 
 # Application definition
@@ -62,7 +62,9 @@ INSTALLED_APPS = [
     'haystack', # 全文检索
     'carts',
     'orders',
-    'django_crontab' # 定时任务
+    'django_crontab', # 定时任务
+    'corsheaders',#cors跨域
+    'meiduo_admin',
 ]
 
 
@@ -74,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'meiduo_mall.urls'
@@ -114,17 +117,20 @@ DATABASES = {
         'PASSWORD': 'mysql', # 数据库用户密码
         'NAME': 'meiduo' # 数据库名字
     },
-    'slave': { # 读（从机）
+    }
+'''
+    slave': { # 读（从机）
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.103.158',
+        'HOST': '127.0.0.1',
         'PORT': 8306,
         'USER': 'root',
         'PASSWORD': 'mysql',
         'NAME': 'meiduo_mall'
     }
-}
+'''
 
-DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
+
+#DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
 
 #Redis
 CACHES = {
@@ -246,12 +252,12 @@ LOGGING = {
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
-
 #指定本项目用户模型类
 #AUTH_USER_MODEL = '应用名.模型类名'
 AUTH_USER_MODEL = 'users.User'
 #自定义用户认证后端
-AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
+AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend',]
+
 
 #用户未登陆时重定向页面
 LOGIN_URL = '/login/'
@@ -262,14 +268,14 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # FastDFS相关参数
-FDFS_BASE_URL = 'http://192.168.45.162:8888/'
+FDFS_BASE_URL = 'http://192.168.45.164:8888/'
 #FDFS_BASE_URL = 'http://image.meiduo.site:8888/'
 
 # Haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://192.168.45.162:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'URL': 'http://192.168.45.164:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
     },
 }
@@ -283,3 +289,29 @@ CRONJOBS = [
     
 ]
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
+
+# CORS
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:8080',
+    'localhost:8080',
+    'www.meiduo.site:8080',
+    'api.meiduo.site:8000',
+    '192.168.45.164:8000',
+    '192.168.45.164:8080',
+)
+CORS_ALLOW_CREDENTIALS = True
+
+#JWT
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_RESPONSE_PAYLOAD_HANDLER':'meiduo_admin.utils.jwt_response_payload_handler',
+}
+
