@@ -42,7 +42,7 @@ SECRET_KEY = 'qxkgd+xatseez^43^k(^bb@hs+-ewb35jl54el!wih^n!rdt=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.45.164']
+ALLOWED_HOSTS = ['192.168.45.165']
 
 
 # Application definition
@@ -268,14 +268,14 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # FastDFS相关参数
-FDFS_BASE_URL = 'http://192.168.45.164:8888/'
+FDFS_BASE_URL = 'http://192.168.45.165:8888/'
 #FDFS_BASE_URL = 'http://image.meiduo.site:8888/'
 
 # Haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://192.168.45.164:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'URL': 'http://192.168.45.165:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
     },
 }
@@ -296,8 +296,8 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:8080',
     'www.meiduo.site:8080',
     'api.meiduo.site:8000',
-    '192.168.45.164:8000',
-    '192.168.45.164:8080',
+    '192.168.45.165:8000',
+    '192.168.45.165:8080',
 )
 CORS_ALLOW_CREDENTIALS = True
 
