@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
-from .views import statistical,users,specs
+from .views import statistical,users,specs,options,skus,orders,permissions
 #from .views import statistical,users,specs,images,orders,permissions
 
 urlpatterns =[
@@ -27,10 +27,55 @@ urlpatterns =[
     #-----------------商品管理-----------
     #规格路由表
     url(r'^goods/simple/$', specs.SpecsView.as_view({'get': 'simple'})),
+    #规格选项表管    /meiduo_admin/goods/specs/simple/
+    url(r'^goods/specs/simple/$', options.OptionSimple.as_view()),
+    #SKU 获取三级分类信息
+    url(r'^skus/categories/$', skus.SKUCategorieView.as_view()),
+    #SKU 获取SPU表名称
+    url(r'^goods/simple/$', skus.SPUSimpleView.as_view()),
+    #SKU 获取SPU商品规格信息
+    url(r'^goods/(?P<pk>\d+)/specs/$', skus.SPUSimpleView.as_view()),
+    #----------系统管理-----------------
+    #获取权限类型
+    url(r'^permission/content_types/$',permissions.PermissionView.as_view({'get':'content_types'})),
+    #获取权限表数据
+    url(r'^permission/simple/$',permissions.GroupView.as_view({'get':'simple'})),
+    #获取管理员信息数据
+    url(r'^permission/groups/simple/$',permissions.AdminView.as_view({'get':'simple'}))
 ]
 
 #------规格表路由-------
 router = DefaultRouter()
 router.register('goods/specs',specs.SpecsView,base_name='specs')
 urlpatterns += router.urls
-print(router.urls)
+
+#  /meiduo_admin/specs/options/
+#------规格选项表路由----------
+router = DefaultRouter()
+router.register('specs/options',options.OptionsView,base_name='options')
+urlpatterns += router.urls
+
+#------SKU路由表-------------
+router = DefaultRouter()
+router.register('skus',skus.SKUGoodsView,base_name='skus')
+urlpatterns += router.urls
+
+#------订单路由--------------
+router = DefaultRouter()
+router.register('orders',orders.OrdersView,base_name='orders')
+urlpatterns += router.urls
+
+#-----权限路由--------------
+router = DefaultRouter()
+router.register('permission/perms',permissions.PermissionView,base_name='permissions')
+urlpatterns += router.urls
+
+#-----用户组路由-------
+router = DefaultRouter()
+router.register('permission/groups',permissions.GroupView,base_name='groups')
+urlpatterns += router.urls
+
+#-----管理员路由------
+router = DefaultRouter()
+router.register('permission/admins',permissions.AdminView,base_name='admin')
+urlpatterns += router.urls

@@ -42,7 +42,7 @@ SECRET_KEY = 'qxkgd+xatseez^43^k(^bb@hs+-ewb35jl54el!wih^n!rdt=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.45.165']
+ALLOWED_HOSTS = ['192.168.45.166']
 
 
 # Application definition
@@ -296,8 +296,8 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:8080',
     'www.meiduo.site:8080',
     'api.meiduo.site:8000',
-    '192.168.45.165:8000',
-    '192.168.45.165:8080',
+    '192.168.45.166:8000',
+    '192.168.45.166:8080',
 )
 CORS_ALLOW_CREDENTIALS = True
 
