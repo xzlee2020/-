@@ -11,18 +11,19 @@ from meiduo_admin.serializers.skus import SPUSpecSerialzier
 from meiduo_admin.utils import UserPageNum
 from rest_framework.viewsets import ModelViewSet
 
-
 class SKUGoodsView(ModelViewSet):
     '''获取SKU信息'''
     #指定序列化器
+
     serializer_class = SKUGoodsSerializer
     #指定分页器
-    pagination = UserPageNum
+    pagination_class = UserPageNum
     #重写获取查询集
     def get_queryset(self):
         #提取keyword
         keyword = self.request.query_params.get('keyword')
         if keyword == ''or keyword is None:
+#            print(SKU.objects.all())
             return SKU.objects.all()
         else:
             return SKU.objects.filter(name=keyword)

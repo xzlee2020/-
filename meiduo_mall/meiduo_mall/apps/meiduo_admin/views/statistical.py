@@ -1,9 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
-from datetime import date
+from datetime import date,timedelta
 from users.models import User
 from goods.models import GoodsVisitCount
+from orders.models import  OrderInfo,OrderGoods
 from meiduo_admin.serializers.statistical import GoodsSerializer
 class UserTotalCountView(APIView):
     '''用户总量统计'''
@@ -55,12 +56,12 @@ class UserOrderCountView(APIView):
     '''日下单用户量'''
 
     #指定管理员权限
-    permission_classes = [IsAdminUser]
+    permission_class = [IsAdminUser]
     def get(self,request):
         #获取当前日期
         now_date = date.today()
         #获取当日下单用户数量orders__create_time
-        count = User.objects.filter(orders__create_time__gte=now_date).count()
+        count = OrderInfo.objects.filter(create_time__gte=now_date).count()
         return Response({
             'count':count,
             'date':now_date
@@ -70,7 +71,7 @@ class UserOrderCountView(APIView):
 class UserMonthCountView(APIView):
     '''月内日增用户统计'''
     #指定管理员权限
-    permission_classes = [IsAdminUser]
+    permission_class = [IsAdminUser]
 
     def get(self,request):
         #获取当前日期
